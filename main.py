@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['UPLOAD_FOLDER'] = app.root_path
-ALLOWED_EXTENSIONS = set(['png'])
+ALLOWED_EXTENSIONS = {'png'}
 
 
 @app.route('/')
@@ -18,7 +18,7 @@ def home():
 
 
 @app.route('/upload/file/png', methods=['POST'])
-def processPngFile():
+def process():
     pass
 
 
