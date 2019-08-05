@@ -1,7 +1,7 @@
 import unittest
 
-from database.tests.BlogTests import BlogTests
-from database.tests.CategoryTests import CategoryTests
+from tests.database.BlogTests import BlogTests
+from tests.database.CategoryTests import CategoryTests
 
 
 def suite():
