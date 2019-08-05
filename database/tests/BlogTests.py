@@ -52,11 +52,11 @@ class BlogTests(unittest.TestCase):
         self.assertEqual(len(blogs[0].tags), 0)
 
     def test_06_addComment(self):
-        BlogOperations.add_comment(BlogTests.saved_id, 'anonymous', 'very good')
+        BlogOperations.add_comment(BlogTests.saved_id, 'anonymous', 'very good comment')
         blogs = Blog.objects(title='title')
         self.assertEqual(len(blogs[0].comments), 1)
         self.assertEqual(blogs[0].comments[0].username, 'anonymous')
-        self.assertEqual(blogs[0].comments[0].content, 'very good')
+        self.assertEqual(blogs[0].comments[0].content, 'very good comment')
         BlogTests.saved_comment_id = blogs[0].comments[0].oid
 
     def test_07_likeComment(self):
@@ -71,12 +71,37 @@ class BlogTests(unittest.TestCase):
         self.assertEqual(len(blogs[0].comments), 1)
         self.assertEqual(blogs[0].comments[0].dislikes, 1)
 
-    def test_09_deleteComment(self):
+    def test_09_addReply(self):
+        BlogOperations.add_reply(BlogTests.saved_id, BlogTests.saved_comment_id, 'anonymous', 'very good reply')
+        blogs = Blog.objects(title='title')
+        self.assertEqual(len(blogs[0].comments[0].replies), 1)
+        self.assertEqual(blogs[0].comments[0].replies[0].username, 'anonymous')
+        self.assertEqual(blogs[0].comments[0].replies[0].content, 'very good reply')
+        BlogTests.saved_reply_id = blogs[0].comments[0].replies[0].oid
+
+    def test_10_likeReply(self):
+        BlogOperations.like_reply(BlogTests.saved_id, BlogTests.saved_comment_id, BlogTests.saved_reply_id)
+        blogs = Blog.objects(title='title')
+        self.assertEqual(len(blogs[0].comments[0].replies), 1)
+        self.assertEqual(blogs[0].comments[0].replies[0].likes, 1)
+
+    def test_11_dislikeReply(self):
+        BlogOperations.dislike_reply(BlogTests.saved_id, BlogTests.saved_comment_id, BlogTests.saved_reply_id)
+        blogs = Blog.objects(title='title')
+        self.assertEqual(len(blogs[0].comments[0].replies), 1)
+        self.assertEqual(blogs[0].comments[0].replies[0].dislikes, 1)
+
+    def test_12_deleteReply(self):
+        BlogOperations.delete_reply(BlogTests.saved_id, BlogTests.saved_comment_id, BlogTests.saved_reply_id)
+        blogs = Blog.objects(title='title')
+        self.assertEqual(len(blogs[0].comments[0].replies), 0)
+
+    def test_13_deleteComment(self):
         BlogOperations.delete_comment(BlogTests.saved_id, BlogTests.saved_comment_id)
         blogs = Blog.objects(title='title')
         self.assertEqual(len(blogs[0].comments), 0)
 
-    def test_10_delete(self):
+    def test_14_delete(self):
         BlogOperations.delete(BlogTests.saved_id)
         blogs = Blog.objects(title='title')
         self.assertEqual(len(blogs), 0)
@@ -84,10 +109,11 @@ class BlogTests(unittest.TestCase):
     @staticmethod
     def suite():
         suite = unittest.TestSuite()
-        suite.addTests([BlogTests('test_00_add'), BlogTests('test_01_like'), BlogTests('test_02_dislike'), BlogTests('test_03_userViewed'),
-                        BlogTests('test_04_addTag'), BlogTests('test_05_deleteTag'), BlogTests('test_06_addComment'),
-                        BlogTests('test_07_likeComment'), BlogTests('test_08_dislikeComment'), BlogTests('test_09_deleteComment'),
-                        BlogTests('test_10_delete')])
+        suite.addTests([BlogTests('test_00_add'), BlogTests('test_01_like'), BlogTests('test_02_dislike'),
+                        BlogTests('test_03_userViewed'), BlogTests('test_04_addTag'), BlogTests('test_05_deleteTag'),
+                        BlogTests('test_06_addComment'), BlogTests('test_07_likeComment'), BlogTests('test_08_dislikeComment'),
+                        BlogTests('test_09_addReply'), BlogTests('test_10_likeReply'), BlogTests('test_11_dislikeReply'),
+                        BlogTests('test_12_deleteReply'), BlogTests('test_13_deleteComment'), BlogTests('test_14_delete')])
         return suite
 
 

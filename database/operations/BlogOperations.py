@@ -2,10 +2,12 @@ from datetime import datetime
 
 from database.models.Blog import Blog
 from database.models.Comment import Comment
+from database.models.Reply import Reply
 from database.operations.CategoryOperations import CategoryOperations
 
 
 class BlogOperations:
+    # blog
     @staticmethod
     def add(category_name, title, content):
         category = CategoryOperations.get_category(category_name)
@@ -80,6 +82,7 @@ class BlogOperations:
                 blog.tags.remove(name)
                 blog.save()
 
+    # comment
     @staticmethod
     def add_comment(blog_id, username, content):
         blogs = Blog.objects(id=blog_id)
@@ -101,7 +104,7 @@ class BlogOperations:
                 for index, item in enumerate(blog.comments):
                     if item.oid == comment_id:
                         idx = index
-                        break;
+                        break
                 if idx != -1:
                     blog.comments.pop(idx)
                     blog.save()
@@ -116,7 +119,7 @@ class BlogOperations:
                 for index, item in enumerate(blog.comments):
                     if item.oid == comment_id:
                         idx = index
-                        break;
+                        break
                 if idx != -1:
                     if blog.comments[idx].likes is None:
                         blog.comments[idx].likes = 0
@@ -133,9 +136,95 @@ class BlogOperations:
                 for index, item in enumerate(blog.comments):
                     if item.oid == comment_id:
                         idx = index
-                        break;
+                        break
                 if idx != -1:
                     if blog.comments[idx].dislikes is None:
                         blog.comments[idx].dislikes = 0
                     blog.comments[idx].dislikes += 1
                     blog.save()
+
+    # reply
+    @staticmethod
+    def add_reply(blog_id, comment_id, username, content):
+        blogs = Blog.objects(id=blog_id)
+        if len(blogs) == 1:
+            blog = blogs.first()
+            if blog.comments is not None:
+                idx = -1
+                for index, item in enumerate(blog.comments):
+                    if item.oid == comment_id:
+                        idx = index
+                        break
+                if idx != -1:
+                    reply = Reply(username=username, content=content, published_datetime=datetime.utcnow())
+                    if blog.comments[idx].replies is None:
+                        blog.comments[idx].replies = []
+                    blog.comments[idx].replies.append(reply)
+                    blog.save()
+
+    @staticmethod
+    def delete_reply(blog_id, comment_id, reply_id):
+        blogs = Blog.objects(id=blog_id)
+        if len(blogs) == 1:
+            blog = blogs.first()
+            if blog.comments is not None:
+                idx = -1
+                for index, item in enumerate(blog.comments):
+                    if item.oid == comment_id:
+                        idx = index
+                        break
+                if idx != -1:
+                    idx2 = -1
+                    for index, item in enumerate(blog.comments[idx].replies):
+                        if item.oid == reply_id:
+                            idx2 = index
+                            break
+                    if idx2 != -1:
+                        blog.comments[idx].replies.pop(idx2)
+                        blog.save()
+
+    @staticmethod
+    def like_reply(blog_id, comment_id, reply_id):
+        blogs = Blog.objects(id=blog_id)
+        if len(blogs) == 1:
+            blog = blogs.first()
+            if blog.comments is not None:
+                idx = -1
+                for index, item in enumerate(blog.comments):
+                    if item.oid == comment_id:
+                        idx = index
+                        break
+                if idx != -1:
+                    idx2 = -1
+                    for index, item in enumerate(blog.comments[idx].replies):
+                        if item.oid == reply_id:
+                            idx2 = index
+                            break
+                    if idx2 != -1:
+                        if blog.comments[idx].replies[idx2].likes is None:
+                            blog.comments[idx].replies[idx2].likes = 0
+                        blog.comments[idx].replies[idx2].likes += 1
+                        blog.save()
+
+    @staticmethod
+    def dislike_reply(blog_id, comment_id, reply_id):
+        blogs = Blog.objects(id=blog_id)
+        if len(blogs) == 1:
+            blog = blogs.first()
+            if blog.comments is not None:
+                idx = -1
+                for index, item in enumerate(blog.comments):
+                    if item.oid == comment_id:
+                        idx = index
+                        break
+                if idx != -1:
+                    idx2 = -1
+                    for index, item in enumerate(blog.comments[idx].replies):
+                        if item.oid == reply_id:
+                            idx2 = index
+                            break
+                    if idx2 != -1:
+                        if blog.comments[idx].replies[idx2].dislikes is None:
+                            blog.comments[idx].replies[idx2].dislikes = 0
+                        blog.comments[idx].replies[idx2].dislikes += 1
+                        blog.save()
