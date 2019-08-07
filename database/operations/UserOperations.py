@@ -1,8 +1,5 @@
-import base64
 import hashlib
 import os
-import tempfile
-from tkinter import Image
 
 from database.models.User import User
 
@@ -26,9 +23,9 @@ class UserOperations:
     def modify_password(phone, new_password):
         users = User.objects(phone=phone)
         if len(users) == 1:
+            user = users.first()
             hashed = hashlib.sha512()
             hashed.update(new_password.encode('utf-8'))
-            user = users.first()
             user.password = hashed.hexdigest()
             user.save()
 
@@ -36,9 +33,9 @@ class UserOperations:
     def verify_password(phone, password):
         users = User.objects(phone=phone)
         if len(users) == 1:
+            user = users.first()
             hashed = hashlib.sha512()
             hashed.update(password.encode('utf-8'))
-            user = users.first()
             if user.password == hashed.hexdigest():
                 return True
         return False
