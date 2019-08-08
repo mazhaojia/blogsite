@@ -6,12 +6,12 @@ from database.models.Comment import Comment
 
 class Blog(Document):
     category = ReferenceField(Category, required=True)
-    title = StringField(required=True, max_length=127)
+    title = StringField(required=True)
     likes = LongField()
     dislikes = LongField()
     viewed_numbers = LongField()
     content = StringField(required=True)
     published_dateTime = DateTimeField(required=True)
     last_modified_dateTime = DateTimeField()
-    tags = ListField(StringField(max_length=31))
+    tags = ListField(StringField())
     comments = ListField(EmbeddedDocumentField(Comment))

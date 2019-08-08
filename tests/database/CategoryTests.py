@@ -18,7 +18,7 @@ class CategoryTests(unittest.TestCase):
         CategoryOperations.delete('test3')
         disconnect()
 
-    def test_0_addCategory(self):
+    def test_50_addCategory(self):
         CategoryOperations.add('test1')
         categories = Category.objects(name='test1')
         self.assertEqual(len(categories), 1)
@@ -29,7 +29,7 @@ class CategoryTests(unittest.TestCase):
         self.assertEqual(len(categories), 1)
         self.assertEqual(categories[0].name, 'test2')
 
-    def test_1_deleteCategory(self):
+    def test_51_deleteCategory(self):
         CategoryOperations.delete('test1')
         categories = Category.objects(name='test1')
         self.assertEqual(len(categories), 0)
@@ -38,7 +38,7 @@ class CategoryTests(unittest.TestCase):
         categories = Category.objects(name='test2')
         self.assertEqual(len(categories), 0)
 
-    def test_2_getCategory(self):
+    def test_52_getCategory(self):
         CategoryOperations.get_category('test3')
         categories = Category.objects(name='test3')
         self.assertEqual(len(categories), 1)
@@ -54,7 +54,7 @@ class CategoryTests(unittest.TestCase):
     @staticmethod
     def suite():
         suite = unittest.TestSuite()
-        suite.addTests([CategoryTests('test_0_addCategory'), CategoryTests('test_1_deleteCategory'), CategoryTests('test_2_getCategory')])
+        suite.addTests([CategoryTests('test_50_addCategory'), CategoryTests('test_51_deleteCategory'), CategoryTests('test_52_getCategory')])
         return suite
 
 

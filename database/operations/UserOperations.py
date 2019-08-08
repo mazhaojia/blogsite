@@ -54,8 +54,8 @@ class UserOperations:
         if len(users) == 1:
             user = users.first()
             user.username = username
-            if os.path.isfile(user.picture_path):
-                os.remove(user.picture_path)
+            if user.picture_path is not None:
+                if os.path.isfile(user.picture_path):
+                    os.remove(user.picture_path)
             user.picture_path = picture_path
             user.save()
-
