@@ -4,5 +4,19 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"editor.fontSize": 17,
+		"workbench.editor.enablePreview": false,
+		"workbench.editor.enablePreviewFromQuickOpen": false,
+		"search.useReplacePreview": false,
+		"files.autoSave": "afterDelay",
+		"debug.console.fontSize": 17,
+		"markdown.preview.fontSize": 17,
+		"terminal.integrated.fontSize": 17,
+		"explorer.confirmDelete": false,
+		"[javascript]": {
+			"editor.tabSize": 2,
+			"editor.insertSpaces": true
+		}
+	}
 }
