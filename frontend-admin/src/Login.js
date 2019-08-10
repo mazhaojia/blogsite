@@ -1,34 +1,32 @@
-import React, { useEffect } from 'react';
-import { CookiesProvider } from 'react-cookie';
+import React, { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import { Redirect } from 'react-router';
-import './App.css';
+import './Login.css';
 
 function Login() {
 
+  const [hasCookie] = useState(false)
   const [cookie, setCookie] = useCookies(['login'])
 
   useEffect(() => {
-    if (cookies.get('login')) {
+    if (cookie.get('login')) {
       this.setState({
         hasCookie: true
-      });
+      })
     } else {
-        this.setState({
-            has
-        })
+      this.setState({
+        hasCookie: false
+      })
     }
-    this.state = {
-      name: 
-    };
-    document.title = `You clicked ${count} times`;
-  });
+  })
 
+  if (hasCookie) {
+    return <Redirect to='/admin' />
+  }
+  
   return (
-    <CookiesProvider>
-      <div />
-    </CookiesProvider>
-  );
+    <div />
+  )
 }
 
 export default Login;

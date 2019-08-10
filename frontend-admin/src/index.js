@@ -5,10 +5,20 @@ import './index.css';
 import App from './App';
 import Login from './Login'
 
+import { CookiesProvider } from 'react-cookie';
+
+function Root() {
+  return (
+    <CookiesProvider>
+      <Login />
+    </CookiesProvider>
+  );
+}
+
 ReactDOM.render((
   <Router>
-      <Route path="/" component={App}>
-        <Route path="login" component={Login} />
+      <Route path="/" component={Root}>
+        <Route path="admin" component={App} />
       </Route>
   </Router>
 ), document.getElementById('root'));
