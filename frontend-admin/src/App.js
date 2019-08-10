@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import { CookiesProvider } from 'react-cookie';
+import { useCookies } from 'react-cookie';
+import { Redirect } from 'react-router';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+  const [hasCookie] = useState(0)
+  const [cookie] = useCookies(['login'])
+
+  useEffect(() => {
+    if (cookie.get('login')) {
+      this.setState({
+        hasCookie: 2
+      })
+    } else {
+      this.setState({
+        hasCookie: 1
+      })
+    }
+  })
+
+  if (hasCookie == 2) {
+    return (
+      <div />
+    )
+  } else if (hasCookie == 1) {
+    return <Redirect to='/login' />
+  } else {
+    return (
+      <CookiesProvider>
+        <div />
+      </CookiesProvider>
+    )
+  }
 }
 
 export default App;
