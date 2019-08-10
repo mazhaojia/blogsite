@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import Blueprint, request, app, make_response, jsonify
+from flask import Blueprint, request, make_response, jsonify, send_from_directory, current_app
 from werkzeug.utils import redirect
 
 from controllers.Admin import Admin
@@ -12,13 +12,13 @@ admin = Blueprint('admin', __name__)
 def admin_home():
     token = request.cookies.get('login')
     if Admin.verify_token(token):
-        return app.send_static_file('admin/index.html')
+        return send_from_directory(current_app.config['ADMIN_FOLDER'], 'index.html')
     return redirect('/admin/login')
 
 
 @admin.route('/login', method=['GET'])
 def admin_login_get():
-    return app.send_static_file('admin/login.html')
+    return send_from_directory(current_app.config['ADMIN_FOLDER'], 'login.html')
 
 
 @admin.route('/login', methods=['POST'])
