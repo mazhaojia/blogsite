@@ -19,10 +19,13 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "react-hooks"
     ],
     "rules": {
         "linebreak-style": ["error", "windows"],
-        "require-jsdoc": "off"
+        "require-jsdoc": "off",
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn"
     }
 }
