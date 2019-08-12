@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useCookies, CookiesProvider } from 'react-cookie'
 import PropTypes from 'prop-types'
 import { Form, Icon, Input, Button } from 'antd'
+import axios from 'axios'
 import './Login.css'
 
 function Login(props) {
@@ -16,8 +17,15 @@ function Login(props) {
     e.preventDefault()
     props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values)
-        // setCookie('login', 'xxxxxx');
+        axios.post('/login', {password: values}).then(({data}) => {
+          if (data.success) {
+            setCookie('login', data.token, {maxAge: data.maxAge, expires: data.expires})
+          } else {
+            console.error(err)
+          }
+        }).catch((err) => {
+          console.error(err)
+        })
       }
     })
   }
