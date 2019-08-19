@@ -5,11 +5,11 @@ import jwt
 from jwt import PyJWTError
 
 from database.operations.UserOperations import UserOperations
-from logging.Log import log_exception
+from loggings.Log import log_exception
 
 
 def read_private_key():
-    path = Path(__file__).resolve().parent.joinpath('certs', 'private.key')
+    path = Path(__file__).resolve().parent.parent.joinpath('certs', 'private.key')
     with open(path) as file:
         return file.read()
 

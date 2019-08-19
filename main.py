@@ -1,14 +1,15 @@
 from flask import Flask
 from flask_cors import CORS
+from mongoengine import connect
 
-from logging.Log import setup_logging_to_file
+from loggings.Log import setup_logging_to_file
 from routes.Admin import admin
 
-setup_logging_to_file('logging/temp_log.txt')
+setup_logging_to_file('loggings/temp_log.txt')
 
 app = Flask(__name__)
 
-CORS(app)
+CORS(app, supports_credentials=True)
 
 app.config['ADMIN_FOLDER'] = app.root_path + 'frontend-admin/build/'
 app.config['WEB_FOLDER'] = app.root_path + 'frontend/build/'
@@ -19,5 +20,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg'}
 
 app.register_blueprint(admin, url_prefix='/admin')
 
+connect('blogsite')
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='localhost', port=5000)

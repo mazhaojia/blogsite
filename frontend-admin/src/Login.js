@@ -17,7 +17,7 @@ function Login(props) {
     e.preventDefault()
     props.form.validateFields((err, values) => {
       if (!err) {
-        axios.post('/login', {password: values}).then(({data}) => {
+        axios.post('/api/login', {password: values}).then(({data}) => {
           if (data.success) {
             setCookie('login', data.token, {maxAge: data.maxAge, expires: data.expires})
           } else {
